@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Jardin Permacole - Calendrier</title>
+    <style>
+        :root {
+            --green-dark: #1b5e20;
+            --green-main: #4caf50;
+            --green-soft: #e8f5e9;
+            --earth: #795548;
+            --white: #ffffff;
+            --planted: #81c784; /* Vert pour les jours de plantation */
+        }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; color: #333; margin: 0; padding: 15px; }
+        .container { max-width: 800px; margin: auto; }
+        header { background: var(--green-dark); color: white; padding: 25px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
+        
+        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        h2 { color: var(--green-dark); margin-top: 0; border-bottom: 2px solid var(--green-soft); padding-bottom: 8px; }
+
+        /* Style du Calendrier */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+            text-align: center;
+        }
+        .calendar-day-head { font-weight: bold; padding: 10px; color: var(--earth); border-bottom: 2px solid #ddd; }
+        .calendar-day { padding: 15px 5px; background: #fafafa; border-radius: 5px; font-size: 0.9em; position: relative; }
+        .empty { background: transparent; }
+        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; border: 2px solid var(--green-dark); }
+        .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; }
+        .today { border: 2px solid var(--earth); }
+
+        .legend { margin-top: 15px; font-size: 0.8em; display: flex; gap: 15px; }
+        .dot { width: 12px; height: 12px; display: inline-block; border-radius: 3px; margin-right: 5px; }
+
+        /* Progress Bar */
+        .progress-bar { background: #ddd; border-radius: 20px; height: 12px; width: 100%; margin: 10px 0; overflow: hidden; }
+        .progress-fill { background: var(--green-main); height: 100%; width: 12%; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🌿 Calendrier de Permaculture</h1>
+        <p>Suivi visuel de tes actions au jardin</p>
+    </header>
+
+    <section class="card">
+        <h2>📅 Mars 2026</h2>
+        <div class="calendar-grid">
+            <div class="calendar-day-head">Lun</div><div class="calendar-day-head">Mar</div><div class="calendar-day-head">Mer</div><div class="calendar-day-head">Jeu</div><div class="calendar-day-head">Ven</div><div class="calendar-day-head">Sam</div><div class="calendar-day-head">Dim</div>
+            
+            <div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div>
+            
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div>
+            <div class="calendar-day planted-day">7</div> <div class="calendar-day">8</div>
+            <div class="calendar-day today">9</div> <div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
+            <div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div>
+            <div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div>
+            <div class="calendar-day">30</div><div class="calendar-day">31</div>
+        </div>
+        <div class="legend">
+            <span><span class="dot" style="background: var(--planted);"></span> Plantation effectuée</span>
+            <span><span class="dot" style="border: 2px solid var(--earth);"></span> Aujourd'hui</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <h3>🌱 En cours : Petit Pois "Karina"</h3>
+        <p>Semés le 07/03. Temps de croissance actuel :</p>
+        <div class="progress-bar"><div class="progress-fill"></div></div>
+        <small>⏳ 12% du cycle accompli. Levée prévue dans environ 8 jours.</small>
+    </section>
+
+    <section class="card" style="border-left: 6px solid var(--green-main); background: var(--green-soft);">
+        <h3>🦉 Conseil de l'expert</h3>
+        <p><em>"Tu vois la case verte du 7 ? C'est le point de départ de la vie de ton sol pour cette saison. Si tu plantes des oignons ou de l'ail bientôt, on ajoutera une autre case verte pour créer ta propre 'mosaïque' de culture !"</em></p>
+    </section>
+</div>
+
+</body>
+</html>
