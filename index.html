@@ -11,7 +11,7 @@
             --green-soft: #e8f5e9;
             --earth: #795548;
             --white: #ffffff;
-            --planted: #81c784; /* Vert pour les jours de plantation */
+            --planted: #81c784; 
         }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; color: #333; margin: 0; padding: 15px; }
         .container { max-width: 800px; margin: auto; }
@@ -32,46 +32,21 @@
         .empty { background: transparent; }
         .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; border: 2px solid var(--green-dark); }
         .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; }
-        .today { border: 2px solid var(--earth); }
+        .today { border: 2px solid var(--earth); font-weight: bold; }
 
         .legend { margin-top: 15px; font-size: 0.8em; display: flex; gap: 15px; }
         .dot { width: 12px; height: 12px; display: inline-block; border-radius: 3px; margin-right: 5px; }
+
+        /* Style du Tableau */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        th { background: var(--green-soft); color: var(--green-dark); }
 
         /* Progress Bar */
         .progress-bar { background: #ddd; border-radius: 20px; height: 12px; width: 100%; margin: 10px 0; overflow: hidden; }
         .progress-fill { background: var(--green-main); height: 100%; width: 12%; }
     </style>
 </head>
-    <section id="journal-perma">
-  <h2>🌱 Mon Journal de Bord 2026</h2>
-  <table border="1">
-    <thead>
-      <tr>
-        <th>Légume</th>
-        <th>Variété</th>
-        <th>Date Semis/Plantation</th>
-        <th>Emplacement</th>
-        <th>Notes (Azote, Paillage...)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Tomate</td>
-        <td>Cœur de Bœuf</td>
-        <td>10 Mars (Semis intérieur)</td>
-        <td>Serre / Bord de fenêtre</td>
-        <td>Besoin de chaleur (20°C min)</td>
-      </tr>
-      <tr>
-        <td>Courgette</td>
-        <td>Verte de Milan</td>
-        <td>Prévu mi-avril</td>
-        <td>Plein soleil</td>
-        <td>Préparer un gros apport de compost</td>
-      </tr>
-    </tbody>
-  </table>
-</section>
 <body>
 
 <div class="container">
@@ -79,6 +54,40 @@
         <h1>🌿 Calendrier de Permaculture</h1>
         <p>Suivi visuel de tes actions au jardin</p>
     </header>
+
+    <section class="card">
+        <h2>🌱 Mon Journal de Bord 2026</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Légume</th>
+                    <th>Variété</th>
+                    <th>Date Action</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Tomate</strong></td>
+                    <td>Cherokee Purple</td>
+                    <td>10 Mars (Semis)</td>
+                    <td>Au chaud, lumière max.</td>
+                </tr>
+                <tr>
+                    <td><strong>Petit Pois</strong></td>
+                    <td>Karina</td>
+                    <td>07 Mars (Terre)</td>
+                    <td>Surveiller limaces.</td>
+                </tr>
+                <tr>
+                    <td><strong>Courgette</strong></td>
+                    <td>Rheinau Gold</td>
+                    <td>Prévu Avril</td>
+                    <td>Gourmande en compost.</td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
     <section class="card">
         <h2>📅 Mars 2026</h2>
@@ -90,13 +99,13 @@
             <div class="calendar-day">1</div>
             <div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div>
             <div class="calendar-day planted-day">7</div> <div class="calendar-day">8</div>
-            <div class="calendar-day today">9</div> <div class="calendar-day">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
+            <div class="calendar-day">9</div> <div class="calendar-day planted-day today">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
             <div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div>
             <div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div>
             <div class="calendar-day">30</div><div class="calendar-day">31</div>
         </div>
         <div class="legend">
-            <span><span class="dot" style="background: var(--planted);"></span> Plantation effectuée</span>
+            <span><span class="dot" style="background: var(--planted);"></span> Plantation/Semis</span>
             <span><span class="dot" style="border: 2px solid var(--earth);"></span> Aujourd'hui</span>
         </div>
     </section>
@@ -105,15 +114,14 @@
         <h3>🌱 En cours : Petit Pois "Karina"</h3>
         <p>Semés le 07/03. Temps de croissance actuel :</p>
         <div class="progress-bar"><div class="progress-fill"></div></div>
-        <small>⏳ 12% du cycle accompli. Levée prévue dans environ 8 jours.</small>
+        <small>⏳ 12% du cycle accompli. Levée prévue autour du 15-18 mars.</small>
     </section>
 
     <section class="card" style="border-left: 6px solid var(--green-main); background: var(--green-soft);">
         <h3>🦉 Conseil de l'expert</h3>
-        <p><em>"Tu vois la case verte du 7 ? C'est le point de départ de la vie de ton sol pour cette saison. Si tu plantes des oignons ou de l'ail bientôt, on ajoutera une autre case verte pour créer ta propre 'mosaïque' de culture !"</em></p>
+        <p><em>"Bravo pour tes semis de <strong>Cherokee Purple</strong> ce 10 mars ! C'est une tomate ancienne qui a besoin de beaucoup de lumière dès la sortie de terre pour éviter que la tige ne devienne trop longue et fragile."</em></p>
     </section>
 </div>
 
 </body>
-
 </html>
