@@ -9,38 +9,33 @@
             --green-dark: #1b5e20; --green-main: #4caf50; --green-soft: #e8f5e9;
             --earth: #795548; --white: #ffffff; --planted: #81c784; --tomato-red: #e53935;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f4; margin: 0; padding: 15px; color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 15px; color: #333; }
         .container { max-width: 800px; margin: auto; }
         header { background: var(--green-dark); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
         .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
         h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 8px; margin-top: 0; }
         
-        /* Calendrier */
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; margin-top: 10px; }
-        .calendar-day-head { font-weight: bold; padding: 5px; color: var(--earth); font-size: 0.8em; text-transform: uppercase; }
-        .calendar-day { padding: 15px 2px; background: #fafafa; border-radius: 5px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; font-size: 0.9em; min-height: 40px; display: flex; align-items: center; justify-content: center; flex-direction: column; }
+        .month-selector { width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px; border: 2px solid var(--green-main); margin-bottom: 15px; background: white; font-weight: bold; color: var(--green-dark); }
+
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .calendar-day-head { font-weight: bold; padding: 5px; color: var(--earth); font-size: 0.8em; }
+        .calendar-day { padding: 12px 2px; background: #fafafa; border-radius: 5px; cursor: pointer; border: 1px solid transparent; font-size: 0.9em; min-height: 45px; display: flex; align-items: center; justify-content: center; }
         .calendar-day:hover { background: var(--green-soft); border-color: var(--green-main); }
         .empty { background: transparent; cursor: default; }
-        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; }
+        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; position: relative; }
+        .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; position: absolute; bottom: 2px; }
         .today { border: 2px solid var(--earth) !important; font-weight: bold; }
-        .planted-day::after { content: "🌱"; font-size: 0.7em; }
 
-        /* Progress Bar */
-        .progress-bar { background: #ddd; border-radius: 20px; height: 16px; width: 100%; margin: 10px 0; overflow: hidden; border: 1px solid #ccc; }
-        .progress-fill { height: 100%; width: 0%; transition: width 1.5s ease-out; }
-        .fill-green { background: var(--green-main); }
-        .fill-red { background: var(--tomato-red); }
-        small { color: #666; font-style: italic; display: block; margin-top: -5px; margin-bottom: 15px; }
-
-        /* Modal */
         #modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
-        .modal-content { background: white; margin: 15% auto; padding: 25px; width: 85%; max-width: 380px; border-radius: 20px; }
+        .modal-content { background: white; margin: 10% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; }
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
         .btn-save { background: var(--green-main); color: white; font-weight: bold; border: none; cursor: pointer; }
-        .btn-cancel { background: #f0f0f0; border: none; cursor: pointer; color: #555; }
 
-        #output-section { border: 2px dashed var(--green-main); background: #f9fff9; padding: 15px; border-radius: 12px; }
-        #output-text { display: block; background: #fff; padding: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: monospace; word-break: break-all; margin: 10px 0; }
+        .progress-bar { background: #ddd; border-radius: 20px; height: 14px; width: 100%; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 1s; }
+        .fill-green { background: var(--green-main); }
+        .fill-red { background: var(--tomato-red); }
+        small { display: block; margin-bottom: 15px; font-style: italic; color: #666; }
     </style>
 </head>
 <body>
@@ -48,155 +43,143 @@
 <div class="container">
     <header>
         <h1>🌿 Mon Jardin Interactif</h1>
-        <p>Potager Perma - Saison 2026</p>
+        <p>Saison Complète 2026</p>
     </header>
 
     <section class="card">
-        <h2>📅 Mars 2026</h2>
+        <h2>📅 Calendrier de Culture</h2>
+        <select id="month-select" class="month-selector" onchange="renderCalendar()">
+            <option value="2">Mars 2026</option>
+            <option value="3">Avril 2026</option>
+            <option value="4">Mai 2026</option>
+            <option value="5">Juin 2026</option>
+            <option value="6">Juillet 2026</option>
+            <option value="7">Août 2026</option>
+            <option value="8">Septembre 2026</option>
+        </select>
         <div id="calendar" class="calendar-grid"></div>
     </section>
 
     <section class="card">
-        <h2>📈 État de Croissance</h2>
-        
+        <h2>📈 Croissance en cours</h2>
         <h3>🌱 Petit Pois "Karina"</h3>
         <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
-        <small id="text-pois">Chargement...</small>
-
+        <small id="text-pois"></small>
         <h3>🍅 Tomate "Cherokee Purple"</h3>
         <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
-        <small id="text-tomates">Chargement...</small>
+        <small id="text-tomates"></small>
     </section>
 
     <div id="output-section" style="display:none;" class="card">
         <h3>💾 Copie pour Gemini</h3>
-        <code id="output-text"></code>
-        <p style="font-size:0.85em; color: #444;">📋 Copie ce texte et colle-le dans notre chat pour que je mette ma mémoire à jour !</p>
+        <code id="output-text" style="display:block; background:#eee; padding:10px; border-radius:5px; word-break: break-all;"></code>
     </div>
 </div>
 
 <div id="modal">
     <div class="modal-content">
-        <h3 id="modal-date" style="color:var(--green-dark); margin-top:0;">Action du jour</h3>
-        <label for="plant-select" style="font-size: 0.9em;">Plante concernée :</label>
+        <h3 id="modal-date" style="margin-top:0; color:var(--green-dark);">Action</h3>
+        <label>Quelle plante ?</label>
         <select id="plant-select">
-    <optgroup label="Légumes Fruits">
-        <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
-        <option value="Courgette Rheinau Gold">Courgette Rheinau Gold</option>
-        <option value="Concombre Arola">Concombre Arola</option>
-        <option value="Melon Farthest North Mix">Melon Farthest North Mix</option>
-        <option value="Kiwano Jelly Round">Kiwano Jelly Round</option>
-        <option value="Chayotte">Chayotte (Christophine)</option>
-    </optgroup>
-    <optgroup label="Racines et Tubercules">
-        <option value="Carotte Demi-Longue de Luc">Carotte Demi-Longue de Luc</option>
-        <option value="Carotte Rouge Sang">Carotte Rouge Sang</option>
-        <option value="Panais Tender And True">Panais Tender And True</option>
-        <option value="Navet De Nancy">Navet De Nancy</option>
-        <option value="Céleri Rave Ortho">Céleri Rave Ortho</option>
-        <option value="Persil tubéreux Halblange">Persil tubéreux Halblange</option>
-        <option value="Pommes de terre">Pommes de terre</option>
-    </optgroup>
-    <optgroup label="Légumineuses">
-        <option value="Pois Karina">Pois Karina</option>
-        <option value="Haricot Contender">Haricot Contender</option>
-    </optgroup>
-    <optgroup label="Autres">
-        <option value="Radis Flamboyant">Radis Flamboyant</option>
-        <option value="Maïs Golden Bantam">Maïs Golden Bantam</option>
-        <option value="Maïs True Gold">Maïs True Gold</option>
-        <option value="Laitue / Roquette / Blettes">Feuilles (Laitue, Blettes...)</option>
-        <option value="Aromatiques / Fleurs">Aromatiques & Fleurs</option>
-        <option value="Autre">Autre observation</option>
-    </optgroup>
-</select>
-        <label for="action-desc" style="font-size: 0.9em;">Action réalisée :</label>
-        <input type="text" id="action-desc" placeholder="Ex: Semis, Plantation, Arrosage...">
-        <button class="btn-save" onclick="saveAction()">Enregistrer l'action</button>
-        <button class="btn-cancel" onclick="closeModal()">Fermer</button>
+            <optgroup label="Légumes Fruits">
+                <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
+                <option value="Courgette Rheinau Gold">Courgette Rheinau Gold</option>
+                <option value="Concombre Arola">Concombre Arola</option>
+                <option value="Melon Farthest North Mix">Melon Farthest North Mix</option>
+                <option value="Kiwano Jelly Round">Kiwano Jelly Round</option>
+                <option value="Chayotte">Chayotte (Christophine)</option>
+            </optgroup>
+            <optgroup label="Racines et Tubercules">
+                <option value="Carotte Demi-Longue de Luc">Carotte Demi-Longue de Luc</option>
+                <option value="Carotte Rouge Sang">Carotte Rouge Sang</option>
+                <option value="Panais Tender And True">Panais Tender And True</option>
+                <option value="Navet De Nancy">Navet De Nancy</option>
+                <option value="Céleri Rave Ortho">Céleri Rave Ortho</option>
+                <option value="Persil tubéreux Halblange">Persil tubéreux Halblange</option>
+                <option value="Pommes de terre">Pommes de terre</option>
+            </optgroup>
+            <optgroup label="Légumineuses">
+                <option value="Pois Karina">Pois Karina</option>
+                <option value="Haricot Contender">Haricot Contender</option>
+            </optgroup>
+            <optgroup label="Autres">
+                <option value="Radis Flamboyant">Radis Flamboyant</option>
+                <option value="Maïs Golden Bantam">Maïs Golden Bantam</option>
+                <option value="Maïs True Gold">Maïs True Gold</option>
+                <option value="Laitue / Roquette / Blettes">Feuilles (Laitue, Blettes...)</option>
+                <option value="Aromatiques / Fleurs">Aromatiques & Fleurs</option>
+                <option value="Autre">Autre observation</option>
+            </optgroup>
+        </select>
+        <label>Que faites-vous ?</label>
+        <input type="text" id="action-desc" placeholder="Ex: Semis, plantation, récolte...">
+        <button class="btn-save" onclick="saveAction()">Enregistrer</button>
+        <button style="background:#eee; border:none; cursor:pointer;" onclick="closeModal()">Annuler</button>
     </div>
 </div>
 
 <script>
-    // Configuration globale
-    const selectedMonth = "Mars 2026";
-    const modal = document.getElementById('modal');
-    let currentDay = 0;
-
-    function init() {
-        renderCalendar();
-        updateBars();
-    }
+    const monthData = [
+        { name: "Mars", days: 31, startEmpty: 6 },
+        { name: "Avril", days: 30, startEmpty: 2 }, 
+        { name: "Mai", days: 31, startEmpty: 4 },
+        { name: "Juin", days: 30, startEmpty: 0 },
+        { name: "Juillet", days: 31, startEmpty: 2 },
+        { name: "Août", days: 31, startEmpty: 5 },
+        { name: "Septembre", days: 30, startEmpty: 1 }
+    ];
 
     function renderCalendar() {
         const cal = document.getElementById('calendar');
-        const heads = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+        const mIdx = parseInt(document.getElementById('month-select').value) - 2;
+        const data = monthData[mIdx];
+        cal.innerHTML = "";
         
-        // Entêtes
-        heads.forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
+        ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
         
-        // 1er Mars 2026 = Dimanche. Donc 6 cases vides (Lun-Sam)
-        for(let i=0; i<6; i++) cal.innerHTML += `<div class="calendar-day empty"></div>`;
+        for(let i=0; i<data.startEmpty; i++) cal.innerHTML += `<div class="calendar-day empty"></div>`;
         
-        // Jours du mois
-        for(let d=1; d<=31; d++) {
+        for(let d=1; d<=data.days; d++) {
             let cls = "calendar-day";
-            if(d === 10) cls += " today";
-            if(d === 7 || d === 10) cls += " planted-day";
-            cal.innerHTML += `<div class="${cls}" onclick="openModal(${d})">${d}</div>`;
+            if(d === 10 && mIdx === 0) cls += " today";
+            if(mIdx === 0 && (d === 7 || d === 10)) cls += " planted-day";
+            cal.innerHTML += `<div class="${cls}" onclick="openModal('${d} ${data.name}')">${d}</div>`;
         }
     }
 
-    function openModal(day) {
-        currentDay = day;
-        document.getElementById('modal-date').innerText = day + " " + selectedMonth;
-        modal.style.display = "block";
+    function openModal(date) {
+        document.getElementById('modal-date').innerText = date + " 2026";
+        document.getElementById('modal').style.display = "block";
     }
 
-    function closeModal() {
-        modal.style.display = "none";
-    }
+    function closeModal() { document.getElementById('modal').style.display = "none"; }
 
     function saveAction() {
         const p = document.getElementById('plant-select').value;
         const a = document.getElementById('action-desc').value;
-        const msg = `LOG JARDIN : Le ${currentDay} ${selectedMonth}, action "${a}" sur "${p}"`;
-        
+        const d = document.getElementById('modal-date').innerText;
         document.getElementById('output-section').style.display = "block";
-        document.getElementById('output-text').innerText = msg;
-        
+        document.getElementById('output-text').innerText = `LOG JARDIN : Le ${d}, action "${a}" sur "${p}"`;
         closeModal();
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        window.scrollTo(0, document.body.scrollHeight);
     }
 
-    function updateBars() {
-        const now = new Date();
-        const data = [
+    function updateProgress() {
+        const today = new Date();
+        const cultures = [
             { id: "progres-pois", tid: "text-pois", start: "2026-03-07", cycle: 70 },
             { id: "progres-tomates", tid: "text-tomates", start: "2026-03-10", cycle: 120 }
         ];
-
-        data.forEach(item => {
-            const start = new Date(item.start);
-            const diff = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-            const pct = Math.min(Math.max(Math.round((diff / item.cycle) * 100), 0), 100);
-            
-            const b = document.getElementById(item.id);
-            if(b) b.style.width = pct + "%";
-            
-            const t = document.getElementById(item.tid);
-            if(t) t.innerText = `⏳ ${pct}% du cycle accompli (${diff} jours passés)`;
+        cultures.forEach(c => {
+            const diff = Math.floor((today - new Date(c.start)) / (1000*60*60*24));
+            const pct = Math.min(Math.max(Math.round((diff/c.cycle)*100), 0), 100);
+            document.getElementById(c.id).style.width = pct + "%";
+            document.getElementById(c.tid).innerText = `⏳ ${pct}% du cycle (${diff} j)`;
         });
     }
 
-    // Fermer le modal si on clique à côté
-    window.onclick = function(event) {
-        if (event.target == modal) closeModal();
-    }
-
-    window.onload = init;
+    window.onload = () => { renderCalendar(); updateProgress(); };
 </script>
-
 </body>
 </html>
 
