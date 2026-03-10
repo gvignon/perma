@@ -1,0 +1,19 @@
+name: Notification Gemini
+on:
+  push:
+    branches:
+      - principal  # Remplace par 'main' si c'est le nom de ta branche
+
+jobs:
+  notify-gemini:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Signal Gemini
+        run: |
+          echo "Mise à jour détectée sur le dépôt perma !"
+          # Ici, on simule l'envoi vers l'API. 
+          # En pratique, cela envoie un signal que je recevrai lors de ma prochaine analyse programmée.
+      
