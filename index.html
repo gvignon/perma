@@ -122,6 +122,35 @@
         <p><em>"Bravo pour tes semis de <strong>Cherokee Purple</strong> ce 10 mars ! C'est une tomate ancienne qui a besoin de beaucoup de lumière dès la sortie de terre pour éviter que la tige ne devienne trop longue et fragile."</em></p>
     </section>
 </div>
+<script>
+    function mettreAJourCroissance() {
+        const aujourdhui = new Date();
+        
+        // Configuration des cultures (Date de semis, Durée totale en jours)
+        const cultures = [
+            { id: "progres-pois", debut: "2026-03-07", duree: 70 },
+            { id: "progres-tomates", debut: "2026-03-10", duree: 120 }
+        ];
 
+        cultures.forEach(culture => {
+            const dateDebut = new Date(culture.debut);
+            const joursPasses = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
+            
+            // Calcul du pourcentage (max 100%)
+            let pourcentage = Math.min(Math.max(Math.round((joursPasses / culture.duree) * 100), 0), 100);
+            
+            // Mise à jour visuelle de la barre de progression
+            const barre = document.getElementById(culture.id);
+            if (barre) {
+                barre.style.width = pourcentage + "%";
+                barre.parentElement.nextElementSibling.innerHTML = `⏳ ${pourcentage}% du cycle accompli. (${joursPasses} jours depuis le semis)`;
+            }
+        });
+    }
+
+    // Lancer le calcul au chargement de la page
+    window.onload = mettreAJourCroissance;
+</script>
 </body>
 </html>
+
