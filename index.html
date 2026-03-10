@@ -80,12 +80,36 @@
         <h3 id="modal-date" style="color:var(--green-dark); margin-top:0;">Action du jour</h3>
         <label for="plant-select" style="font-size: 0.9em;">Plante concernée :</label>
         <select id="plant-select">
-            <option value="Tomates Cherokee Purple">Tomates Cherokee Purple</option>
-            <option value="Courgettes Rheinau Gold">Courgettes Rheinau Gold</option>
-            <option value="Pois Karina">Pois Karina</option>
-            <option value="Radis Flamboyant">Radis Flamboyant</option>
-            <option value="Autre">Autre (Observation)</option>
-        </select>
+    <optgroup label="Légumes Fruits">
+        <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
+        <option value="Courgette Rheinau Gold">Courgette Rheinau Gold</option>
+        <option value="Concombre Arola">Concombre Arola</option>
+        <option value="Melon Farthest North Mix">Melon Farthest North Mix</option>
+        <option value="Kiwano Jelly Round">Kiwano Jelly Round</option>
+        <option value="Chayotte">Chayotte (Christophine)</option>
+    </optgroup>
+    <optgroup label="Racines et Tubercules">
+        <option value="Carotte Demi-Longue de Luc">Carotte Demi-Longue de Luc</option>
+        <option value="Carotte Rouge Sang">Carotte Rouge Sang</option>
+        <option value="Panais Tender And True">Panais Tender And True</option>
+        <option value="Navet De Nancy">Navet De Nancy</option>
+        <option value="Céleri Rave Ortho">Céleri Rave Ortho</option>
+        <option value="Persil tubéreux Halblange">Persil tubéreux Halblange</option>
+        <option value="Pommes de terre">Pommes de terre</option>
+    </optgroup>
+    <optgroup label="Légumineuses">
+        <option value="Pois Karina">Pois Karina</option>
+        <option value="Haricot Contender">Haricot Contender</option>
+    </optgroup>
+    <optgroup label="Autres">
+        <option value="Radis Flamboyant">Radis Flamboyant</option>
+        <option value="Maïs Golden Bantam">Maïs Golden Bantam</option>
+        <option value="Maïs True Gold">Maïs True Gold</option>
+        <option value="Laitue / Roquette / Blettes">Feuilles (Laitue, Blettes...)</option>
+        <option value="Aromatiques / Fleurs">Aromatiques & Fleurs</option>
+        <option value="Autre">Autre observation</option>
+    </optgroup>
+</select>
         <label for="action-desc" style="font-size: 0.9em;">Action réalisée :</label>
         <input type="text" id="action-desc" placeholder="Ex: Semis, Plantation, Arrosage...">
         <button class="btn-save" onclick="saveAction()">Enregistrer l'action</button>
@@ -175,6 +199,7 @@
 
 </body>
 </html>
+
 
 
 
