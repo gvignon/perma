@@ -36,6 +36,7 @@
         .fill-green { background: var(--green-main); }
         .fill-red { background: var(--tomato-red); }
         small { display: block; margin-bottom: 15px; font-style: italic; color: #666; }
+        .plant-title { font-size: 1.1em; font-weight: bold; margin-bottom: 5px; color: #444; }
     </style>
 </head>
 <body>
@@ -62,10 +63,12 @@
 
     <section class="card">
         <h2>📈 Croissance en cours</h2>
-        <h3>🌱 Petit Pois "Karina"</h3>
+        
+        <div class="plant-title">🌱 Petit Pois "Karina" (07/03)</div>
         <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
         <small id="text-pois"></small>
-        <h3>🍅 Tomate "Cherokee Purple"</h3>
+
+        <div class="plant-title">🍅 Tomate "Cherokee Purple" (10/03)</div>
         <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
         <small id="text-tomates"></small>
     </section>
