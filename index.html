@@ -9,30 +9,36 @@
             --green-dark: #1b5e20; --green-main: #4caf50; --green-soft: #e8f5e9;
             --earth: #795548; --white: #ffffff; --planted: #81c784; --tomato-red: #e53935;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 15px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 15px; color: #333; }
         .container { max-width: 800px; margin: auto; }
         header { background: var(--green-dark); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
         .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+        h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 8px; margin-top: 0; }
         
-        /* Calendrier Interactif */
+        /* Calendrier */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
-        .calendar-day { padding: 15px 5px; background: #fafafa; border-radius: 5px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .calendar-day-head { font-weight: bold; padding: 10px; color: var(--earth); font-size: 0.8em; }
+        .calendar-day { padding: 15px 5px; background: #fafafa; border-radius: 5px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; font-size: 0.9em; position: relative; }
         .calendar-day:hover { background: var(--green-soft); border-color: var(--green-main); }
-        .calendar-day-head { font-weight: bold; padding: 10px; color: var(--earth); }
         .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; }
-        .today { border: 2px solid var(--earth) !important; }
-
-        /* Fenêtre Surgissante (Modal) */
-        #modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
-        .modal-content { background: white; margin: 15% auto; padding: 20px; width: 80%; max-width: 400px; border-radius: 15px; }
-        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
-        .btn-save { background: var(--green-main); color: white; font-weight: bold; border: none; cursor: pointer; }
+        .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; }
+        .today { border: 2px solid var(--earth) !important; font-weight: bold; }
 
         /* Progress Bar */
-        .progress-bar { background: #ddd; border-radius: 20px; height: 14px; width: 100%; margin: 10px 0; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; transition: width 1s; }
+        .progress-bar { background: #ddd; border-radius: 20px; height: 16px; width: 100%; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 1s ease-in-out; }
         .fill-green { background: var(--green-main); }
         .fill-red { background: var(--tomato-red); }
+        small { color: #666; font-style: italic; display: block; margin-top: -5px; margin-bottom: 15px; }
+
+        /* Modal */
+        #modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(3px); }
+        .modal-content { background: white; margin: 20% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; box-shadow: 0 5px 30px rgba(0,0,0,0.3); }
+        input, select, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
+        .btn-save { background: var(--green-main); color: white; font-weight: bold; border: none; cursor: pointer; }
+        .btn-cancel { background: #eee; border: none; cursor: pointer; color: #666; }
+
+        #output-section { border: 2px dashed var(--green-main); background: var(--green-soft); padding: 15px; border-radius: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
@@ -40,67 +46,76 @@
 <div class="container">
     <header>
         <h1>🌿 Mon Jardin Interactif</h1>
-        <p>Clique sur une date pour enregistrer une action</p>
+        <p>Suivi en temps réel - Saison 2026</p>
     </header>
 
     <section class="card">
         <h2>📅 Mars 2026</h2>
-        <div id="calendar" class="calendar-grid">
-            </div>
+        <div id="calendar" class="calendar-grid"></div>
+        <div style="margin-top:15px; font-size: 0.8em; display:flex; gap:10px;">
+            <span><span style="display:inline-block; width:10px; height:10px; background:var(--planted); border-radius:2px;"></span> Semis/Plant</span>
+            <span><span style="display:inline-block; width:10px; height:10px; border:1px solid var(--earth); border-radius:2px;"></span> Aujourd'hui</span>
+        </div>
     </section>
 
     <section class="card">
-        <h2>📈 Suivi des "Gourmandes"</h2>
-        <h3>🌱 Petits Pois "Karina"</h3>
+        <h2>📈 Croissance</h2>
+        
+        <h3>🌱 Petit Pois "Karina"</h3>
         <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
-        <h3>🍅 Tomates "Cherokee Purple"</h3>
+        <small id="text-pois">Calcul...</small>
+
+        <h3>🍅 Tomate "Cherokee Purple"</h3>
         <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
+        <small id="text-tomates">Calcul...</small>
     </section>
 
-    <section class="card" id="output-section" style="display:none; border: 2px dashed var(--green-main);">
-        <h3>💾 Information à envoyer à Gemini</h3>
-        <p>Copie ce texte et envoie-le moi pour que je mémorise l'action :</p>
-        <code id="output-text" style="display:block; background:#eee; padding:10px;"></code>
-    </section>
+    <div id="output-section" style="display:none;" class="card">
+        <h3>💾 Copie pour Gemini</h3>
+        <code id="output-text" style="display:block; background:#fff; padding:10px; border-radius:5px; margin-bottom:10px;"></code>
+        <p style="font-size:0.8em;">Envoie-moi ce texte dans notre discussion !</p>
+    </div>
 </div>
 
 <div id="modal">
     <div class="modal-content">
-        <h3 id="modal-date">Action au jardin</h3>
+        <h3 id="modal-date" style="color:var(--green-dark); margin-top:0;">Action</h3>
         <select id="plant-select">
             <option value="Courgettes Rheinau Gold">Courgettes Rheinau Gold</option>
             <option value="Tomates Cherokee Purple">Tomates Cherokee Purple</option>
             <option value="Pois Karina">Pois Karina</option>
+            <option value="Radis Flamboyant">Radis Flamboyant</option>
             <option value="Autre">Autre observation</option>
         </select>
-        <input type="text" id="action-desc" placeholder="Ex: Semis, plantation, arrosage...">
-        <button class="btn-save" onclick="saveAction()">Enregistrer l'action</button>
-        <button onclick="closeModal()">Annuler</button>
+        <input type="text" id="action-desc" placeholder="Ex: Semis, Plantation, Arrosage...">
+        <button class="btn-save" onclick="saveAction()">Enregistrer</button>
+        <button class="btn-cancel" onclick="closeModal()">Annuler</button>
     </div>
 </div>
 
 <script>
     const calendar = document.getElementById('calendar');
     const modal = document.getElementById('modal');
-    let selectedDate = "";
+    let selectedDay = 0;
 
-    // Génération du calendrier
     function initCalendar() {
         const heads = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
         heads.forEach(h => calendar.innerHTML += `<div class="calendar-day-head">${h}</div>`);
         
-        for(let i=0; i<6; i++) calendar.innerHTML += `<div class="calendar-day empty"></div>`; // Décalage Mars 2026
+        // 1er Mars 2026 est un Dimanche, donc 6 cases vides (Lundi à Samedi)
+        for(let i=0; i<6; i++) calendar.innerHTML += `<div class="calendar-day empty"></div>`;
         
         for(let d=1; d<=31; d++) {
-            let isToday = (d === 10) ? "today" : "";
-            let isPlanted = (d === 7 || d === 10) ? "planted-day" : "";
-            calendar.innerHTML += `<div class="calendar-day ${isToday} ${isPlanted}" onclick="openModal(${d})">${d}</div>`;
+            let classes = "calendar-day";
+            if (d === 10) classes += " today";
+            if (d === 7 || d === 10) classes += " planted-day";
+            calendar.innerHTML += `<div class="${classes}" onclick="openModal(${d})">${d}</div>`;
         }
     }
 
     function openModal(day) {
-        selectedDate = day + " Mars 2026";
-        document.getElementById('modal-date').innerText = selectedDate;
+        selectedDay = day;
+        document.getElementById('modal-date').innerText = day + " Mars 2026";
         modal.style.display = "block";
     }
 
@@ -109,32 +124,9 @@
     function saveAction() {
         const plante = document.getElementById('plant-select').value;
         const desc = document.getElementById('action-desc').value;
-        const output = `Action du ${selectedDate} : ${desc} pour ${plante}`;
+        const output = `Action du ${selectedDay} Mars 2026 : ${desc} sur ${plante}`;
         
-        document.getElementById('output-section').style.display = "block";
-        document.getElementById('output-text').innerText = output;
-        
-        closeModal();
-        alert("Action préparée ! Copie le texte en bas de page pour me l'envoyer.");
-    }
+        document.getElementById('output-section').style.display = "block
 
-    // Gestion des barres de progression
-    function updateProgress() {
-        const today = new Date();
-        const cultures = [
-            { id: "progres-pois", debut: "2026-03-07", duree: 70 },
-            { id: "progres-tomates", debut: "2026-03-10", duree: 120 }
-        ];
-        cultures.forEach(c => {
-            const jours = Math.floor((today - new Date(c.debut)) / (1000*60*60*24));
-            document.getElementById(c.id).style.width = Math.min(Math.round((jours/c.duree)*100), 100) + "%";
-        });
-    }
-
-    window.onload = () => { initCalendar(); updateProgress(); };
-</script>
-
-</body>
-</html>
 
 
