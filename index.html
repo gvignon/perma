@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Jardin Permacole - Calendrier</title>
+    <title>Mon Jardin Permacole - 2026</title>
     <style>
         :root {
             --green-dark: #1b5e20;
@@ -12,6 +12,7 @@
             --earth: #795548;
             --white: #ffffff;
             --planted: #81c784; 
+            --tomato-red: #e53935;
         }
         body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; color: #333; margin: 0; padding: 15px; }
         .container { max-width: 800px; margin: auto; }
@@ -32,37 +33,41 @@
         .empty { background: transparent; }
         .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; border: 2px solid var(--green-dark); }
         .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; }
-        .today { border: 2px solid var(--earth); font-weight: bold; }
+        .today { border: 2px solid var(--earth); font-weight: bold; box-shadow: inset 0 0 5px rgba(121, 85, 72, 0.3); }
 
         .legend { margin-top: 15px; font-size: 0.8em; display: flex; gap: 15px; }
         .dot { width: 12px; height: 12px; display: inline-block; border-radius: 3px; margin-right: 5px; }
 
         /* Style du Tableau */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
+        th, td { padding: 12px; border: 1px solid #eee; text-align: left; }
         th { background: var(--green-soft); color: var(--green-dark); }
 
         /* Progress Bar */
-        .progress-bar { background: #ddd; border-radius: 20px; height: 12px; width: 100%; margin: 10px 0; overflow: hidden; }
-        .progress-fill { background: var(--green-main); height: 100%; width: 12%; }
+        .progress-bar { background: #ddd; border-radius: 20px; height: 14px; width: 100%; margin: 10px 0; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; transition: width 1s ease-in-out; }
+        .fill-green { background: var(--green-main); }
+        .fill-red { background: var(--tomato-red); }
+        
+        small { color: #666; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>🌿 Calendrier de Permaculture</h1>
-        <p>Suivi visuel de tes actions au jardin</p>
+        <h1>🌿 Mon Jardin Permacole</h1>
+        <p>Suivi en temps réel - Saison 2026</p>
     </header>
 
     <section class="card">
-        <h2>🌱 Mon Journal de Bord 2026</h2>
+        <h2>🌱 Journal de Bord</h2>
         <table>
             <thead>
                 <tr>
                     <th>Légume</th>
                     <th>Variété</th>
-                    <th>Date Action</th>
+                    <th>Action</th>
                     <th>Notes</th>
                 </tr>
             </thead>
@@ -71,19 +76,19 @@
                     <td><strong>Tomate</strong></td>
                     <td>Cherokee Purple</td>
                     <td>10 Mars (Semis)</td>
-                    <td>Au chaud, lumière max.</td>
+                    <td>Au chaud (20°C). Lumière max.</td>
                 </tr>
                 <tr>
                     <td><strong>Petit Pois</strong></td>
                     <td>Karina</td>
                     <td>07 Mars (Terre)</td>
-                    <td>Surveiller limaces.</td>
+                    <td>Pois à grains ridés. Surveiller limaces.</td>
                 </tr>
                 <tr>
                     <td><strong>Courgette</strong></td>
                     <td>Rheinau Gold</td>
                     <td>Prévu Avril</td>
-                    <td>Gourmande en compost.</td>
+                    <td>Variété jaune, très productive.</td>
                 </tr>
             </tbody>
         </table>
@@ -98,8 +103,8 @@
             
             <div class="calendar-day">1</div>
             <div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div>
-            <div class="calendar-day planted-day">7</div> <div class="calendar-day">8</div>
-            <div class="calendar-day">9</div> <div class="calendar-day planted-day today">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
+            <div class="calendar-day planted-day">7</div><div class="calendar-day">8</div>
+            <div class="calendar-day">9</div><div class="calendar-day planted-day today">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
             <div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div>
             <div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div>
             <div class="calendar-day">30</div><div class="calendar-day">31</div>
@@ -111,46 +116,58 @@
     </section>
 
     <section class="card">
-        <h3>🌱 En cours : Petit Pois "Karina"</h3>
-        <p>Semés le 07/03. Temps de croissance actuel :</p>
-        <div class="progress-bar"><div class="progress-fill"></div></div>
-        <small>⏳ 12% du cycle accompli. Levée prévue autour du 15-18 mars.</small>
+        <h2>📈 Croissance en direct</h2>
+        
+        <div style="margin-bottom: 20px;">
+            <h3>🌱 Petit Pois "Karina"</h3>
+            <div class="progress-bar">
+                <div id="progres-pois" class="progress-fill fill-green"></div>
+            </div>
+            <small>Calcul de la levée...</small>
+        </div>
+
+        <div>
+            <h3>🍅 Tomate "Cherokee Purple"</h3>
+            <div class="progress-bar">
+                <div id="progres-tomates" class="progress-fill fill-red"></div>
+            </div>
+            <small>Calcul du cycle...</small>
+        </div>
     </section>
 
     <section class="card" style="border-left: 6px solid var(--green-main); background: var(--green-soft);">
         <h3>🦉 Conseil de l'expert</h3>
-        <p><em>"Bravo pour tes semis de <strong>Cherokee Purple</strong> ce 10 mars ! C'est une tomate ancienne qui a besoin de beaucoup de lumière dès la sortie de terre pour éviter que la tige ne devienne trop longue et fragile."</em></p>
+        <p id="conseil-expert"><em>"Observe bien tes petits pois du 7 mars, la levée devrait avoir lieu d'ici quelques jours !"</em></p>
     </section>
 </div>
+
 <script>
     function mettreAJourCroissance() {
         const aujourdhui = new Date();
         
-        // Configuration des cultures (Date de semis, Durée totale en jours)
         const cultures = [
-            { id: "progres-pois", debut: "2026-03-07", duree: 70 },
-            { id: "progres-tomates", debut: "2026-03-10", duree: 120 }
+            { id: "progres-pois", debut: "2026-03-07", duree: 70, nom: "Petits Pois" },
+            { id: "progres-tomates", debut: "2026-03-10", duree: 120, nom: "Tomates" }
         ];
 
         cultures.forEach(culture => {
             const dateDebut = new Date(culture.debut);
-            const joursPasses = Math.floor((aujourdhui - dateDebut) / (1000 * 60 * 60 * 24));
+            const msParJour = 24 * 60 * 60 * 1000;
+            const joursPasses = Math.floor((aujourdhui - dateDebut) / msParJour);
             
-            // Calcul du pourcentage (max 100%)
             let pourcentage = Math.min(Math.max(Math.round((joursPasses / culture.duree) * 100), 0), 100);
             
-            // Mise à jour visuelle de la barre de progression
             const barre = document.getElementById(culture.id);
             if (barre) {
                 barre.style.width = pourcentage + "%";
-                barre.parentElement.nextElementSibling.innerHTML = `⏳ ${pourcentage}% du cycle accompli. (${joursPasses} jours depuis le semis)`;
+                barre.parentElement.nextElementSibling.innerHTML = `⏳ ${pourcentage}% du cycle accompli (${joursPasses} jours depuis le semis)`;
             }
         });
     }
 
-    // Lancer le calcul au chargement de la page
     window.onload = mettreAJourCroissance;
 </script>
+
 </body>
 </html>
 
