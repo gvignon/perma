@@ -3,171 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Jardin Permacole - 2026</title>
+    <title>Mon Jardin Interactif - 2026</title>
     <style>
         :root {
-            --green-dark: #1b5e20;
-            --green-main: #4caf50;
-            --green-soft: #e8f5e9;
-            --earth: #795548;
-            --white: #ffffff;
-            --planted: #81c784; 
-            --tomato-red: #e53935;
+            --green-dark: #1b5e20; --green-main: #4caf50; --green-soft: #e8f5e9;
+            --earth: #795548; --white: #ffffff; --planted: #81c784; --tomato-red: #e53935;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; color: #333; margin: 0; padding: 15px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 15px; }
         .container { max-width: 800px; margin: auto; }
-        header { background: var(--green-dark); color: white; padding: 25px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        
+        header { background: var(--green-dark); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
         .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
-        h2 { color: var(--green-dark); margin-top: 0; border-bottom: 2px solid var(--green-soft); padding-bottom: 8px; }
+        
+        /* Calendrier Interactif */
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+        .calendar-day { padding: 15px 5px; background: #fafafa; border-radius: 5px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .calendar-day:hover { background: var(--green-soft); border-color: var(--green-main); }
+        .calendar-day-head { font-weight: bold; padding: 10px; color: var(--earth); }
+        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; }
+        .today { border: 2px solid var(--earth) !important; }
 
-        /* Style du Calendrier */
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px;
-            text-align: center;
-        }
-        .calendar-day-head { font-weight: bold; padding: 10px; color: var(--earth); border-bottom: 2px solid #ddd; }
-        .calendar-day { padding: 15px 5px; background: #fafafa; border-radius: 5px; font-size: 0.9em; position: relative; }
-        .empty { background: transparent; }
-        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; border: 2px solid var(--green-dark); }
-        .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; }
-        .today { border: 2px solid var(--earth); font-weight: bold; box-shadow: inset 0 0 5px rgba(121, 85, 72, 0.3); }
-
-        .legend { margin-top: 15px; font-size: 0.8em; display: flex; gap: 15px; }
-        .dot { width: 12px; height: 12px; display: inline-block; border-radius: 3px; margin-right: 5px; }
-
-        /* Style du Tableau */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.9em; }
-        th, td { padding: 12px; border: 1px solid #eee; text-align: left; }
-        th { background: var(--green-soft); color: var(--green-dark); }
+        /* Fenêtre Surgissante (Modal) */
+        #modal { display: none; position: fixed; z-index: 10; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); }
+        .modal-content { background: white; margin: 15% auto; padding: 20px; width: 80%; max-width: 400px; border-radius: 15px; }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ddd; }
+        .btn-save { background: var(--green-main); color: white; font-weight: bold; border: none; cursor: pointer; }
 
         /* Progress Bar */
         .progress-bar { background: #ddd; border-radius: 20px; height: 14px; width: 100%; margin: 10px 0; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; transition: width 1s ease-in-out; }
+        .progress-fill { height: 100%; width: 0%; transition: width 1s; }
         .fill-green { background: var(--green-main); }
         .fill-red { background: var(--tomato-red); }
-        
-        small { color: #666; font-style: italic; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>🌿 Mon Jardin Permacole</h1>
-        <p>Suivi en temps réel - Saison 2026</p>
+        <h1>🌿 Mon Jardin Interactif</h1>
+        <p>Clique sur une date pour enregistrer une action</p>
     </header>
 
     <section class="card">
-        <h2>🌱 Journal de Bord</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Légume</th>
-                    <th>Variété</th>
-                    <th>Action</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Tomate</strong></td>
-                    <td>Cherokee Purple</td>
-                    <td>10 Mars (Semis)</td>
-                    <td>Au chaud (20°C). Lumière max.</td>
-                </tr>
-                <tr>
-                    <td><strong>Petit Pois</strong></td>
-                    <td>Karina</td>
-                    <td>07 Mars (Terre)</td>
-                    <td>Pois à grains ridés. Surveiller limaces.</td>
-                </tr>
-                <tr>
-                    <td><strong>Courgette</strong></td>
-                    <td>Rheinau Gold</td>
-                    <td>Prévu Avril</td>
-                    <td>Variété jaune, très productive.</td>
-                </tr>
-            </tbody>
-        </table>
-    </section>
-
-    <section class="card">
         <h2>📅 Mars 2026</h2>
-        <div class="calendar-grid">
-            <div class="calendar-day-head">Lun</div><div class="calendar-day-head">Mar</div><div class="calendar-day-head">Mer</div><div class="calendar-day-head">Jeu</div><div class="calendar-day-head">Ven</div><div class="calendar-day-head">Sam</div><div class="calendar-day-head">Dim</div>
-            
-            <div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div><div class="calendar-day empty"></div>
-            
-            <div class="calendar-day">1</div>
-            <div class="calendar-day">2</div><div class="calendar-day">3</div><div class="calendar-day">4</div><div class="calendar-day">5</div><div class="calendar-day">6</div>
-            <div class="calendar-day planted-day">7</div><div class="calendar-day">8</div>
-            <div class="calendar-day">9</div><div class="calendar-day planted-day today">10</div><div class="calendar-day">11</div><div class="calendar-day">12</div><div class="calendar-day">13</div><div class="calendar-day">14</div><div class="calendar-day">15</div>
-            <div class="calendar-day">16</div><div class="calendar-day">17</div><div class="calendar-day">18</div><div class="calendar-day">19</div><div class="calendar-day">20</div><div class="calendar-day">21</div><div class="calendar-day">22</div>
-            <div class="calendar-day">23</div><div class="calendar-day">24</div><div class="calendar-day">25</div><div class="calendar-day">26</div><div class="calendar-day">27</div><div class="calendar-day">28</div><div class="calendar-day">29</div>
-            <div class="calendar-day">30</div><div class="calendar-day">31</div>
-        </div>
-        <div class="legend">
-            <span><span class="dot" style="background: var(--planted);"></span> Plantation/Semis</span>
-            <span><span class="dot" style="border: 2px solid var(--earth);"></span> Aujourd'hui</span>
-        </div>
+        <div id="calendar" class="calendar-grid">
+            </div>
     </section>
 
     <section class="card">
-        <h2>📈 Croissance en direct</h2>
-        
-        <div style="margin-bottom: 20px;">
-            <h3>🌱 Petit Pois "Karina"</h3>
-            <div class="progress-bar">
-                <div id="progres-pois" class="progress-fill fill-green"></div>
-            </div>
-            <small>Calcul de la levée...</small>
-        </div>
-
-        <div>
-            <h3>🍅 Tomate "Cherokee Purple"</h3>
-            <div class="progress-bar">
-                <div id="progres-tomates" class="progress-fill fill-red"></div>
-            </div>
-            <small>Calcul du cycle...</small>
-        </div>
+        <h2>📈 Suivi des "Gourmandes"</h2>
+        <h3>🌱 Petits Pois "Karina"</h3>
+        <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
+        <h3>🍅 Tomates "Cherokee Purple"</h3>
+        <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
     </section>
 
-    <section class="card" style="border-left: 6px solid var(--green-main); background: var(--green-soft);">
-        <h3>🦉 Conseil de l'expert</h3>
-        <p id="conseil-expert"><em>"Observe bien tes petits pois du 7 mars, la levée devrait avoir lieu d'ici quelques jours !"</em></p>
+    <section class="card" id="output-section" style="display:none; border: 2px dashed var(--green-main);">
+        <h3>💾 Information à envoyer à Gemini</h3>
+        <p>Copie ce texte et envoie-le moi pour que je mémorise l'action :</p>
+        <code id="output-text" style="display:block; background:#eee; padding:10px;"></code>
     </section>
 </div>
 
-<script>
-    function mettreAJourCroissance() {
-        const aujourdhui = new Date();
-        
-        const cultures = [
-            { id: "progres-pois", debut: "2026-03-07", duree: 70, nom: "Petits Pois" },
-            { id: "progres-tomates", debut: "2026-03-10", duree: 120, nom: "Tomates" }
-        ];
+<div id="modal">
+    <div class="modal-content">
+        <h3 id="modal-date">Action au jardin</h3>
+        <select id="plant-select">
+            <option value="Courgettes Rheinau Gold">Courgettes Rheinau Gold</option>
+            <option value="Tomates Cherokee Purple">Tomates Cherokee Purple</option>
+            <option value="Pois Karina">Pois Karina</option>
+            <option value="Autre">Autre observation</option>
+        </select>
+        <input type="text" id="action-desc" placeholder="Ex: Semis, plantation, arrosage...">
+        <button class="btn-save" onclick="saveAction()">Enregistrer l'action</button>
+        <button onclick="closeModal()">Annuler</button>
+    </div>
+</div>
 
-        cultures.forEach(culture => {
-            const dateDebut = new Date(culture.debut);
-            const msParJour = 24 * 60 * 60 * 1000;
-            const joursPasses = Math.floor((aujourdhui - dateDebut) / msParJour);
-            
-            let pourcentage = Math.min(Math.max(Math.round((joursPasses / culture.duree) * 100), 0), 100);
-            
-            const barre = document.getElementById(culture.id);
-            if (barre) {
-                barre.style.width = pourcentage + "%";
-                barre.parentElement.nextElementSibling.innerHTML = `⏳ ${pourcentage}% du cycle accompli (${joursPasses} jours depuis le semis)`;
-            }
+<script>
+    const calendar = document.getElementById('calendar');
+    const modal = document.getElementById('modal');
+    let selectedDate = "";
+
+    // Génération du calendrier
+    function initCalendar() {
+        const heads = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+        heads.forEach(h => calendar.innerHTML += `<div class="calendar-day-head">${h}</div>`);
+        
+        for(let i=0; i<6; i++) calendar.innerHTML += `<div class="calendar-day empty"></div>`; // Décalage Mars 2026
+        
+        for(let d=1; d<=31; d++) {
+            let isToday = (d === 10) ? "today" : "";
+            let isPlanted = (d === 7 || d === 10) ? "planted-day" : "";
+            calendar.innerHTML += `<div class="calendar-day ${isToday} ${isPlanted}" onclick="openModal(${d})">${d}</div>`;
+        }
+    }
+
+    function openModal(day) {
+        selectedDate = day + " Mars 2026";
+        document.getElementById('modal-date').innerText = selectedDate;
+        modal.style.display = "block";
+    }
+
+    function closeModal() { modal.style.display = "none"; }
+
+    function saveAction() {
+        const plante = document.getElementById('plant-select').value;
+        const desc = document.getElementById('action-desc').value;
+        const output = `Action du ${selectedDate} : ${desc} pour ${plante}`;
+        
+        document.getElementById('output-section').style.display = "block";
+        document.getElementById('output-text').innerText = output;
+        
+        closeModal();
+        alert("Action préparée ! Copie le texte en bas de page pour me l'envoyer.");
+    }
+
+    // Gestion des barres de progression
+    function updateProgress() {
+        const today = new Date();
+        const cultures = [
+            { id: "progres-pois", debut: "2026-03-07", duree: 70 },
+            { id: "progres-tomates", debut: "2026-03-10", duree: 120 }
+        ];
+        cultures.forEach(c => {
+            const jours = Math.floor((today - new Date(c.debut)) / (1000*60*60*24));
+            document.getElementById(c.id).style.width = Math.min(Math.round((jours/c.duree)*100), 100) + "%";
         });
     }
 
-    window.onload = mettreAJourCroissance;
+    window.onload = () => { initCalendar(); updateProgress(); };
 </script>
 
 </body>
 </html>
+
 
