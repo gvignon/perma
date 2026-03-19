@@ -26,6 +26,14 @@
         .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; position: absolute; bottom: 2px; }
         .today { border: 2px solid var(--earth) !important; font-weight: bold; }
 
+        /* Compteur de Biodiversité */
+        .bio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
+        .bio-item { background: var(--green-soft); border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; border: 1px solid transparent; transition: 0.2s; -webkit-tap-highlight-color: transparent; }
+        .bio-item:active { transform: scale(0.95); background: var(--planted); }
+        .bio-emoji { font-size: 1.5em; display: block; }
+        .bio-count { font-weight: bold; font-size: 1.2em; color: var(--green-dark); }
+        .bio-label { font-size: 0.8em; color: var(--earth); display: block; }
+
         #modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
         .modal-content { background: white; margin: 10% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; }
         input, select, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
@@ -62,8 +70,33 @@
     </section>
 
     <section class="card">
+        <h2>🐞 Alliés du Jardin</h2>
+        <div class="bio-grid">
+            <div class="bio-item" onclick="addBio('abeille')">
+                <span class="bio-emoji">🐝</span>
+                <span class="bio-count" id="count-abeille">0</span>
+                <span class="bio-label">Pollinisateurs</span>
+            </div>
+            <div class="bio-item" onclick="addBio('coccinelle')">
+                <span class="bio-emoji">🐞</span>
+                <span class="bio-count" id="count-coccinelle">0</span>
+                <span class="bio-label">Coccinelles</span>
+            </div>
+            <div class="bio-item" onclick="addBio('herisson')">
+                <span class="bio-emoji">🦔</span>
+                <span class="bio-count" id="count-herisson">0</span>
+                <span class="bio-label">Hérissons/Crapauds</span>
+            </div>
+            <div class="bio-item" onclick="addBio('oiseau')">
+                <span class="bio-emoji">🐦</span>
+                <span class="bio-count" id="count-oiseau">0</span>
+                <span class="bio-label">Oiseaux</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
         <h2>📈 Croissance en cours</h2>
-        
         <div class="plant-title">🌱 Petit Pois "Karina" (07/03)</div>
         <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
         <small id="text-pois"></small>
@@ -132,22 +165,28 @@
         { name: "Septembre", days: 30, startEmpty: 1 }
     ];
 
+    let counts = { abeille: 0, coccinelle: 0, herisson: 0, oiseau: 0 };
+
     function renderCalendar() {
         const cal = document.getElementById('calendar');
         const mIdx = parseInt(document.getElementById('month-select').value) - 2;
         const data = monthData[mIdx];
         cal.innerHTML = "";
-        
         ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
-        
         for(let i=0; i<data.startEmpty; i++) cal.innerHTML += `<div class="calendar-day empty"></div>`;
-        
         for(let d=1; d<=data.days; d++) {
             let cls = "calendar-day";
-            if(d === 10 && mIdx === 0) cls += " today";
+            if(d === 19 && mIdx === 0) cls += " today"; // Aujourd'hui 19 Mars
             if(mIdx === 0 && (d === 7 || d === 10)) cls += " planted-day";
             cal.innerHTML += `<div class="${cls}" onclick="openModal('${d} ${data.name}')">${d}</div>`;
         }
+    }
+
+    function addBio(type) {
+        counts[type]++;
+        document.getElementById('count-' + type).innerText = counts[type];
+        document.getElementById('output-section').style.display = "block";
+        document.getElementById('output-text').innerText = `OBSERVATION : +1 ${type} au jardin !`;
     }
 
     function openModal(date) {
@@ -164,11 +203,10 @@
         document.getElementById('output-section').style.display = "block";
         document.getElementById('output-text').innerText = `LOG JARDIN : Le ${d}, action "${a}" sur "${p}"`;
         closeModal();
-        window.scrollTo(0, document.body.scrollHeight);
     }
 
     function updateProgress() {
-        const today = new Date();
+        const today = new Date("2026-03-19"); // Fixé à aujourd'hui
         const cultures = [
             { id: "progres-pois", tid: "text-pois", start: "2026-03-07", cycle: 70 },
             { id: "progres-tomates", tid: "text-tomates", start: "2026-03-10", cycle: 120 }
