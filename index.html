@@ -3,43 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Jardin Interactif 2026</title>
+    <title>Mon Jardin 2026 - Mémoire</title>
     <style>
         :root {
             --green-dark: #1b5e20; --green-main: #4caf50; --green-soft: #e8f5e9;
             --earth: #795548; --white: #ffffff; --planted: #81c784; --tomato-red: #e53935;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 15px; color: #333; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f7f4; margin: 0; padding: 10px; color: #333; }
         .container { max-width: 800px; margin: auto; }
-        header { background: var(--green-dark); color: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; }
-        .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
-        h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 8px; margin-top: 0; }
+        header { background: var(--green-dark); color: white; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 15px; }
+        .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 5px; margin-top: 0; font-size: 1.2em; }
         
         /* Calendrier */
-        .month-selector { width: 100%; padding: 12px; font-size: 1.1em; border-radius: 8px; border: 2px solid var(--green-main); margin-bottom: 15px; background: white; font-weight: bold; color: var(--green-dark); }
-        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; min-height: 200px; }
-        .calendar-day-head { font-weight: bold; padding: 5px; color: var(--earth); font-size: 0.8em; }
-        .calendar-day { padding: 12px 2px; background: #fafafa; border-radius: 5px; cursor: pointer; border: 1px solid #eee; font-size: 0.9em; min-height: 45px; display: flex; align-items: center; justify-content: center; }
-        .calendar-day:hover { background: var(--green-soft); border-color: var(--green-main); }
-        .empty { background: transparent; border: none; cursor: default; }
-        .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; position: relative; }
-        .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; position: absolute; bottom: 2px; }
-        .today { border: 2px solid var(--earth) !important; font-weight: bold; background: #fffde7; }
+        .month-selector { width: 100%; padding: 10px; border-radius: 8px; border: 2px solid var(--green-main); margin-bottom: 10px; font-weight: bold; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+        .calendar-day-head { font-weight: bold; font-size: 0.7em; color: var(--earth); }
+        .calendar-day { padding: 10px 2px; background: #fafafa; border-radius: 4px; cursor: pointer; border: 1px solid #eee; font-size: 0.85em; min-height: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .today { border: 2px solid var(--earth) !important; background: #fffde7; }
+        .has-action { background: var(--planted) !important; color: white; font-weight: bold; }
 
-        /* Bio & Progress */
-        .bio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
-        .bio-item { background: var(--green-soft); border-radius: 10px; padding: 10px; text-align: center; cursor: pointer; }
-        .progress-bar { background: #ddd; border-radius: 20px; height: 14px; width: 100%; margin: 10px 0; overflow: hidden; }
-        .progress-fill { height: 100%; width: 0%; transition: width 1s; }
-        .fill-green { background: var(--green-main); }
-        .fill-red { background: var(--tomato-red); }
+        /* Journal */
+        #journal-list { list-style: none; padding: 0; font-size: 0.9em; }
+        .journal-item { background: #f9f9f9; padding: 8px; border-left: 4px solid var(--green-main); margin-bottom: 5px; border-radius: 4px; display: flex; justify-content: space-between; }
+        .btn-del { color: #cc0000; cursor: pointer; font-weight: bold; padding-left: 10px; }
 
-        /* Liste des plantes */
-        .plant-list { font-size: 0.85em; color: #555; column-count: 2; column-gap: 20px; }
-        .plant-category { font-weight: bold; color: var(--green-dark); margin-top: 10px; display: block; border-bottom: 1px solid #eee; }
+        /* Inventaire */
+        .plant-list { font-size: 0.8em; color: #555; column-count: 2; }
+        .plant-cat { font-weight: bold; color: var(--green-dark); display: block; margin-top: 8px; border-bottom: 1px solid #eee; }
 
-        #modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); }
-        .modal-content { background: white; margin: 15% auto; padding: 25px; width: 85%; max-width: 400px; border-radius: 20px; }
+        /* Modal */
+        #modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
+        .modal-content { background: white; margin: 20% auto; padding: 20px; width: 85%; max-width: 350px; border-radius: 15px; }
+        input, select, button { width: 100%; padding: 10px; margin: 5px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; }
     </style>
 </head>
 <body>
@@ -47,81 +43,61 @@
 <div class="container">
     <header>
         <h1>🌿 Mon Jardin 2026</h1>
-        <p>Dashboard Permaculture</p>
     </header>
 
     <section class="card">
-        <h2>📅 Calendrier de Culture</h2>
+        <h2>📅 Calendrier</h2>
         <select id="month-select" class="month-selector" onchange="renderCalendar()">
             <option value="2">Mars 2026</option>
             <option value="3">Avril 2026</option>
             <option value="4">Mai 2026</option>
             <option value="5">Juin 2026</option>
-            <option value="6">Juillet 2026</option>
-            <option value="7">Août 2026</option>
-            <option value="8">Septembre 2026</option>
         </select>
-        <div id="calendar-container" class="calendar-grid">
-            </div>
+        <div id="calendar-container" class="calendar-grid"></div>
     </section>
 
     <section class="card">
-        <h2>🐞 Alliés observés</h2>
-        <div class="bio-grid">
-            <div class="bio-item" onclick="addBio('abeille')">🐝 <span id="count-abeille">0</span><br><small>Pollinisateurs</small></div>
-            <div class="bio-item" onclick="addBio('coccinelle')">🐞 <span id="count-coccinelle">0</span><br><small>Coccinelles</small></div>
-        </div>
+        <h2>📝 Journal des semis du 21 Mars</h2>
+        <ul id="journal-list">
+            </ul>
     </section>
 
     <section class="card">
-        <h2>📈 Croissance active</h2>
-        <div style="font-weight:bold">🌱 Petit Pois "Karina" (07/03)</div>
-        <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
-        <small id="text-pois"></small>
-
-        <div style="font-weight:bold; margin-top:10px">🍅 Tomate "Cherokee Purple" (10/03)</div>
-        <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
-        <small id="text-tomates"></small>
+        <h2>📈 Croissance (Pois & Tomates)</h2>
+        <div id="progress-zone"></div>
     </section>
 
     <section class="card">
-        <h2>📦 Mon Inventaire de Graines</h2>
+        <h2>📦 Inventaire Complet</h2>
         <div class="plant-list">
-            <span class="plant-category">Légumes Fruits</span>
-            • Tomate Cherokee Purple<br>• Courgette Rheinau Gold<br>• Concombre Arola<br>• Melon North Mix<br>• Kiwano / Chayotte
-            
-            <span class="plant-category">Racines & Tubercules</span>
-            • Carotte de Luc / Rouge Sang<br>• Panais / Navet Nancy<br>• Céleri Rave / Persil tub.<br>• Pommes de terre
-            
-            <span class="plant-category">Légumineuses</span>
-            • Pois Karina<br>• Haricot Contender
-            
-            <span class="plant-category">Autres</span>
-            • Radis Flamboyant<br>• Maïs Golden / True Gold<br>• Laitue / Blettes
+            <span class="plant-cat">Légumes Fruits</span>
+            Tomate Cherokee Purple, Courgette Rheinau, Concombre Arola, Melon North, Kiwano, Chayotte.
+            <span class="plant-cat">Racines</span>
+            Carottes (Luc, Rouge Sang), Panais, Navet, Céleri, Persil tub., Pommes de terre.
+            <span class="plant-cat">Légumineuses</span>
+            Pois Karina, Haricot Contender.
         </div>
     </section>
-
-    <div id="output-section" style="display:none;" class="card">
-        <code id="output-text" style="font-size:0.8em;"></code>
-    </div>
 </div>
 
 <div id="modal">
     <div class="modal-content">
         <h3 id="modal-date">Date</h3>
-        <input type="text" id="action-desc" placeholder="Ex: Semis, Arrosage...">
-        <button onclick="saveAction()" style="background:var(--green-main); color:white; border:none; padding:10px; width:100%; border-radius:8px;">OK</button>
-        <button onclick="closeModal()" style="margin-top:10px; background:none; border:none; width:100%;">Annuler</button>
+        <select id="plant-choice">
+             <option value="Pois Karina">Pois Karina</option>
+             <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
+             <option value="Radis Flamboyant">Radis Flamboyant</option>
+             <option value="Autre">Autre...</option>
+        </select>
+        <input type="text" id="action-desc" placeholder="Action (ex: Semis)">
+        <button onclick="saveAction()" style="background:var(--green-main); color:white; border:none;">Enregistrer</button>
+        <button onclick="closeModal()" style="background:none; border:none;">Annuler</button>
     </div>
 </div>
 
 <script>
-    const monthData = [
-        { name: "Mars", days: 31, startEmpty: 6 }, { name: "Avril", days: 30, startEmpty: 2 }, 
-        { name: "Mai", days: 31, startEmpty: 4 }, { name: "Juin", days: 30, startEmpty: 0 },
-        { name: "Juillet", days: 31, startEmpty: 2 }, { name: "Août", days: 31, startEmpty: 5 },
-        { name: "Septembre", days: 30, startEmpty: 1 }
-    ];
+    let gardenLogs = JSON.parse(localStorage.getItem('gardenLogs')) || [];
+    const monthData = [{ name: "Mars", days: 31, startEmpty: 6 }, { name: "Avril", days: 30, startEmpty: 2 }];
 
     function renderCalendar() {
         const cal = document.getElementById('calendar-container');
@@ -131,43 +107,48 @@
         ['L','M','M','J','V','S','D'].forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
         for(let i=0; i<data.startEmpty; i++) cal.innerHTML += `<div class="calendar-day empty"></div>`;
         for(let d=1; d<=data.days; d++) {
-            let cls = "calendar-day";
+            const dateStr = `${d} ${data.name}`;
+            const hasAction = gardenLogs.some(log => log.date === dateStr);
+            let cls = "calendar-day" + (hasAction ? " has-action" : "");
             if(d === 23 && mIdx === 0) cls += " today";
-            if(mIdx === 0 && (d === 7 || d === 10)) cls += " planted-day";
-            cal.innerHTML += `<div class="${cls}" onclick="openModal('${d} ${data.name}')">${d}</div>`;
+            cal.innerHTML += `<div class="${cls}" onclick="openModal('${dateStr}')">${d}${hasAction ? ' 🌱' : ''}</div>`;
         }
-    }
-
-    let counts = { abeille: 0, coccinelle: 0 };
-    function addBio(t) { 
-        counts[t]++; document.getElementById('count-'+t).innerText = counts[t]; 
-        document.getElementById('output-section').style.display="block";
-        document.getElementById('output-text').innerText = "Observation bio enregistrée.";
+        updateJournal();
     }
 
     function openModal(d) { document.getElementById('modal-date').innerText = d; document.getElementById('modal').style.display="block"; }
     function closeModal() { document.getElementById('modal').style.display="none"; }
-    function saveAction() { 
-        document.getElementById('output-section').style.display="block";
-        document.getElementById('output-text').innerText = "Action enregistrée pour le " + document.getElementById('modal-date').innerText;
-        closeModal(); 
+
+    function saveAction() {
+        const log = {
+            date: document.getElementById('modal-date').innerText,
+            plant: document.getElementById('plant-choice').value,
+            desc: document.getElementById('action-desc').value
+        };
+        gardenLogs.push(log);
+        localStorage.setItem('gardenLogs', JSON.stringify(gardenLogs));
+        renderCalendar();
+        closeModal();
     }
 
-    function updateProgress() {
-        const today = new Date("2026-03-23");
-        const c = [
-            { id: "progres-pois", tid: "text-pois", start: "2026-03-07", cycle: 70 },
-            { id: "progres-tomates", tid: "text-tomates", start: "2026-03-10", cycle: 120 }
-        ];
-        c.forEach(x => {
-            const diff = Math.floor((today - new Date(x.start)) / 86400000);
-            const pct = Math.min(Math.max(Math.round((diff/x.cycle)*100), 0), 100);
-            document.getElementById(x.id).style.width = pct + "%";
-            document.getElementById(x.tid).innerText = pct + "% du cycle ("+diff+" j)";
+    function updateJournal() {
+        const list = document.getElementById('journal-list');
+        list.innerHTML = gardenLogs.length === 0 ? "<li>Aucune action notée</li>" : "";
+        gardenLogs.forEach((log, idx) => {
+            list.innerHTML += `<li class="journal-item">
+                <span><strong>${log.date}</strong>: ${log.plant} (${log.desc})</span>
+                <span class="btn-del" onclick="deleteLog(${idx})">✘</span>
+            </li>`;
         });
     }
 
-    window.onload = () => { renderCalendar(); updateProgress(); };
+    function deleteLog(idx) {
+        gardenLogs.splice(idx, 1);
+        localStorage.setItem('gardenLogs', JSON.stringify(gardenLogs));
+        renderCalendar();
+    }
+
+    window.onload = renderCalendar;
 </script>
 </body>
 </html>
