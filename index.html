@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Jardin 2026 - Officiel</title>
+    <title>Mon Jardin 2026 - Expert</title>
     <style>
         :root {
             --green-dark: #1b5e20; --green-main: #4caf50; --green-soft: #e8f5e9;
@@ -13,19 +13,30 @@
         .container { max-width: 800px; margin: auto; }
         header { background: var(--green-dark); color: white; padding: 15px; border-radius: 12px; text-align: center; margin-bottom: 15px; }
         .card { background: white; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 5px; margin-top: 0; }
+        h2 { color: var(--green-dark); border-bottom: 2px solid var(--green-soft); padding-bottom: 5px; margin-top: 0; font-size: 1.1em; }
         
+        /* Calendrier interactif */
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
         .calendar-day-head { font-weight: bold; font-size: 0.7em; color: var(--earth); }
-        .calendar-day { padding: 10px 2px; background: #fafafa; border-radius: 4px; border: 1px solid #eee; font-size: 0.85em; min-height: 40px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .calendar-day { padding: 10px 2px; background: #fafafa; border-radius: 4px; border: 1px solid #eee; font-size: 0.85em; min-height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+        .calendar-day:hover { background: var(--green-soft); }
         .today { border: 2px solid var(--earth) !important; background: #fffde7; }
-        
-        /* Style pour les jours plantés */
-        .is-planted { background: var(--planted) !important; color: white; font-weight: bold; cursor: help; }
-        .is-planted::after { content: "🌱"; position: absolute; bottom: 1px; font-size: 0.7em; }
+        .is-planted { background: var(--planted) !important; color: white; font-weight: bold; }
+        .is-planted::after { content: "🌱"; position: absolute; bottom: 1px; font-size: 0.6em; }
 
-        .journal-item { background: #f9f9f9; padding: 10px; border-left: 4px solid var(--green-main); margin-bottom: 8px; border-radius: 4px; font-size: 0.9em; }
-        .tag { background: var(--green-dark); color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-right: 5px; }
+        /* Journal */
+        .journal-item { background: #f9f9f9; padding: 8px; border-left: 4px solid var(--green-main); margin-bottom: 6px; border-radius: 4px; font-size: 0.85em; display: flex; justify-content: space-between; }
+        .tag { background: var(--green-dark); color: white; padding: 2px 5px; border-radius: 3px; margin-right: 5px; }
+
+        /* Inventaire fixe en bas */
+        .inv-grid { font-size: 0.75em; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; color: #555; }
+        .inv-cat { font-weight: bold; color: var(--green-dark); display: block; border-bottom: 1px solid #ddd; margin-bottom: 3px; }
+
+        /* Fenêtre Modal */
+        #modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(2px); }
+        .modal-content { background: white; margin: 15% auto; padding: 20px; width: 85%; max-width: 350px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        select, input, button { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid #ddd; box-sizing: border-box; font-size: 16px; }
+        .btn-save { background: var(--green-main); color: white; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -33,70 +44,114 @@
 <div class="container">
     <header>
         <h1>🌿 Mon Jardin 2026</h1>
-        <p>Dashboard Palaiseau</p>
+        <p>Expert - Palaiseau</p>
     </header>
 
     <section class="card">
-        <h2>📅 Calendrier de Mars 2026</h2>
-        <div id="calendar" class="calendar-grid">
-            </div>
+        <h2>📅 Calendrier de Mars</h2>
+        <div id="calendar" class="calendar-grid"></div>
     </section>
 
     <section class="card">
-        <h2>📝 Journal des Plantations</h2>
-        <div id="journal">
-            </div>
+        <h2>📝 Journal de Bord</h2>
+        <div id="journal"></div>
     </section>
 
     <section class="card">
-        <h2>📦 Mon Inventaire Fixe</h2>
-        <p style="font-size: 0.85em; line-height: 1.6;">
-            <strong>Fruits :</strong> Tomate Cherokee Purple, Courgette Rheinau, Concombre Arola, Melon, Kiwano, Chayotte.<br>
-            <strong>Racines :</strong> Carottes (Luc, Rouge), Panais, Navet, Céleri, Persil tub., Patates.<br>
-            <strong>Légumineuses :</strong> Pois Karina, Haricot Contender.
-        </p>
+        <h2>📦 Graines en Stock</h2>
+        <div class="inv-grid">
+            <div><span class="inv-cat">FRUITS</span>Tomate Cherokee Purple, Courgette Rheinau Gold, Concombre Arola, Melon, Kiwano, Chayotte.</div>
+            <div><span class="inv-cat">RACINES</span>Carotte Luc/Rouge, Panais, Navet Nancy, Céleri Rave, Persil tub., Pommes de terre.</div>
+        </div>
     </section>
 </div>
 
+<div id="modal">
+    <div class="modal-content">
+        <h3 id="modal-date" style="margin-top:0; color:var(--green-dark);">Action</h3>
+        <label>Plante :</label>
+        <select id="plant-select">
+            <optgroup label="Tes Graines">
+                <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
+                <option value="Pois Karina">Pois Karina</option>
+                <option value="Radis Flamboyant">Radis Flamboyant</option>
+                <option value="Carotte Rouge Sang">Carotte Rouge Sang</option>
+                <option value="Pommes de terre">Pommes de terre</option>
+                <option value="Laitue / Blettes">Laitue / Blettes</option>
+                <option value="Courgette Rheinau Gold">Courgette Rheinau Gold</option>
+            </optgroup>
+            <option value="Autre">Autre observation...</option>
+        </select>
+        <label>Action :</label>
+        <input type="text" id="action-desc" placeholder="Ex: Semis, Arrosage, Récolte">
+        <button class="btn-save" onclick="saveNewAction()">Enregistrer l'action</button>
+        <button onclick="closeModal()" style="background:none; border:none; color:#666;">Annuler</button>
+    </div>
+</div>
+
 <script>
-    // TES DONNÉES MÉMORISÉES SONT ICI
-    const myPlants = [
-        { day: 7, month: "Mars", plant: "Pois Karina", action: "Semis en pleine terre" },
-        { day: 10, month: "Mars", plant: "Tomate Cherokee Purple", action: "Semis en godets (intérieur)" },
-        { day: 21, month: "Mars", plant: "Radis & Laitues", action: "Semis de printemps" }
+    // 1. TES ACTIONS HISTORIQUES (Celles-ci ne s'effacent jamais)
+    const history = [
+        { d: 7, p: "Pois Karina", a: "Semis pleine terre" },
+        { d: 10, p: "Tomate Cherokee Purple", a: "Semis en godets" },
+        { d: 21, p: "Radis & Laitues", a: "Semis de samedi" }
     ];
 
-    function init() {
+    // 2. TES NOUVELLES ACTIONS (Sauvées dans ton téléphone)
+    let userLogs = JSON.parse(localStorage.getItem('gardenLogs2026')) || [];
+
+    function render() {
         const cal = document.getElementById('calendar');
-        const journal = document.getElementById('journal');
-        const startEmpty = 6; // Mars 2026 commence un Dimanche (si on compte Lun-Dim)
-        
-        // Entêtes
+        const jour = document.getElementById('journal');
+        cal.innerHTML = ""; jour.innerHTML = "";
+        const startEmpty = 6; // Mars 2026
+
         ['L','M','M','J','V','S','D'].forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
-        
-        // Vides
         for(let i=0; i<startEmpty; i++) cal.innerHTML += `<div class="calendar-day" style="visibility:hidden"></div>`;
         
-        // Jours du mois
         for(let d=1; d<=31; d++) {
-            const planting = myPlants.find(p => p.day === d);
+            const hasHistory = history.find(x => x.d === d);
+            const hasUser = userLogs.filter(x => x.day == d);
+            
             let cls = "calendar-day";
             if(d === 23) cls += " today";
-            if(planting) cls += " is-planted";
+            if(hasHistory || hasUser.length > 0) cls += " is-planted";
             
-            cal.innerHTML += `<div class="${cls}" title="${planting ? planting.plant : ''}">${d}</div>`;
+            cal.innerHTML += `<div class="${cls}" onclick="openModal(${d})">${d}</div>`;
             
-            if(planting) {
-                journal.innerHTML += `
-                    <div class="journal-item">
-                        <span class="tag">${d} Mars</span>
-                        <strong>${planting.plant}</strong> : ${planting.action}
-                    </div>`;
-            }
+            // Remplir le journal
+            if(hasHistory) addEntry(d, hasHistory.p, hasHistory.a);
+            hasUser.forEach(log => addEntry(d, log.plant, log.action));
         }
     }
 
-    window.onload = init;
+    function addEntry(day, plant, action) {
+        document.getElementById('journal').innerHTML += `
+            <div class="journal-item">
+                <span><span class="tag">${day} Mar</span> <strong>${plant}</strong> : ${action}</span>
+            </div>`;
+    }
+
+    function openModal(d) {
+        document.getElementById('modal-date').innerText = d + " Mars 2026";
+        document.getElementById('modal-date').dataset.day = d;
+        document.getElementById('modal').style.display = "block";
+    }
+
+    function closeModal() { document.getElementById('modal').style.display = "none"; }
+
+    function saveNewAction() {
+        const d = document.getElementById('modal-date').dataset.day;
+        const p = document.getElementById('plant-select').value;
+        const a = document.getElementById('action-desc').value;
+        
+        userLogs.push({ day: d, plant: p, action: a });
+        localStorage.setItem('gardenLogs2026', JSON.stringify(userLogs));
+        render();
+        closeModal();
+    }
+
+    window.onload = render;
 </script>
 </body>
 </html>
