@@ -24,7 +24,7 @@
         .empty { background: transparent; cursor: default; }
         .planted-day { background-color: var(--planted) !important; color: white; font-weight: bold; position: relative; }
         .planted-day::after { content: "🌱"; display: block; font-size: 0.7em; position: absolute; bottom: 2px; }
-        .today { border: 2px solid var(--earth) !important; font-weight: bold; }
+        .today { border: 2px solid var(--earth) !important; font-weight: bold; background: #fffde7; }
 
         /* Compteur de Biodiversité */
         .bio-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px; }
@@ -92,137 +92,6 @@
                 <span class="bio-count" id="count-oiseau">0</span>
                 <span class="bio-label">Oiseaux</span>
             </div>
-        </div>
-    </section>
-
-    <section class="card">
-        <h2>📈 Croissance en cours</h2>
-        <div class="plant-title">🌱 Petit Pois "Karina" (07/03)</div>
-        <div class="progress-bar"><div id="progres-pois" class="progress-fill fill-green"></div></div>
-        <small id="text-pois"></small>
-
-        <div class="plant-title">🍅 Tomate "Cherokee Purple" (10/03)</div>
-        <div class="progress-bar"><div id="progres-tomates" class="progress-fill fill-red"></div></div>
-        <small id="text-tomates"></small>
-    </section>
-
-    <div id="output-section" style="display:none;" class="card">
-        <h3>💾 Copie pour Gemini</h3>
-        <code id="output-text" style="display:block; background:#eee; padding:10px; border-radius:5px; word-break: break-all;"></code>
-    </div>
-</div>
-
-<div id="modal">
-    <div class="modal-content">
-        <h3 id="modal-date" style="margin-top:0; color:var(--green-dark);">Action</h3>
-        <label>Quelle plante ?</label>
-        <select id="plant-select">
-            <optgroup label="Légumes Fruits">
-                <option value="Tomate Cherokee Purple">Tomate Cherokee Purple</option>
-                <option value="Courgette Rheinau Gold">Courgette Rheinau Gold</option>
-                <option value="Concombre Arola">Concombre Arola</option>
-                <option value="Melon Farthest North Mix">Melon Farthest North Mix</option>
-                <option value="Kiwano Jelly Round">Kiwano Jelly Round</option>
-                <option value="Chayotte">Chayotte (Christophine)</option>
-            </optgroup>
-            <optgroup label="Racines et Tubercules">
-                <option value="Carotte Demi-Longue de Luc">Carotte Demi-Longue de Luc</option>
-                <option value="Carotte Rouge Sang">Carotte Rouge Sang</option>
-                <option value="Panais Tender And True">Panais Tender And True</option>
-                <option value="Navet De Nancy">Navet De Nancy</option>
-                <option value="Céleri Rave Ortho">Céleri Rave Ortho</option>
-                <option value="Persil tubéreux Halblange">Persil tubéreux Halblange</option>
-                <option value="Pommes de terre">Pommes de terre</option>
-            </optgroup>
-            <optgroup label="Légumineuses">
-                <option value="Pois Karina">Pois Karina</option>
-                <option value="Haricot Contender">Haricot Contender</option>
-            </optgroup>
-            <optgroup label="Autres">
-                <option value="Radis Flamboyant">Radis Flamboyant</option>
-                <option value="Maïs Golden Bantam">Maïs Golden Bantam</option>
-                <option value="Maïs True Gold">Maïs True Gold</option>
-                <option value="Laitue / Roquette / Blettes">Feuilles (Laitue, Blettes...)</option>
-                <option value="Aromatiques / Fleurs">Aromatiques & Fleurs</option>
-                <option value="Autre">Autre observation</option>
-            </optgroup>
-        </select>
-        <label>Que faites-vous ?</label>
-        <input type="text" id="action-desc" placeholder="Ex: Semis, plantation, récolte...">
-        <button class="btn-save" onclick="saveAction()">Enregistrer</button>
-        <button style="background:#eee; border:none; cursor:pointer;" onclick="closeModal()">Annuler</button>
-    </div>
-</div>
-
-<script>
-    const monthData = [
-        { name: "Mars", days: 31, startEmpty: 6 },
-        { name: "Avril", days: 30, startEmpty: 2 }, 
-        { name: "Mai", days: 31, startEmpty: 4 },
-        { name: "Juin", days: 30, startEmpty: 0 },
-        { name: "Juillet", days: 31, startEmpty: 2 },
-        { name: "Août", days: 31, startEmpty: 5 },
-        { name: "Septembre", days: 30, startEmpty: 1 }
-    ];
-
-    let counts = { abeille: 0, coccinelle: 0, herisson: 0, oiseau: 0 };
-
-    function renderCalendar() {
-        const cal = document.getElementById('calendar');
-        const mIdx = parseInt(document.getElementById('month-select').value) - 2;
-        const data = monthData[mIdx];
-        cal.innerHTML = "";
-        ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].forEach(h => cal.innerHTML += `<div class="calendar-day-head">${h}</div>`);
-        for(let i=0; i<data.startEmpty; i++) cal.innerHTML += `<div class="calendar-day empty"></div>`;
-        for(let d=1; d<=data.days; d++) {
-            let cls = "calendar-day";
-            if(d === 19 && mIdx === 0) cls += " today"; // Aujourd'hui 19 Mars
-            if(mIdx === 0 && (d === 7 || d === 10)) cls += " planted-day";
-            cal.innerHTML += `<div class="${cls}" onclick="openModal('${d} ${data.name}')">${d}</div>`;
-        }
-    }
-
-    function addBio(type) {
-        counts[type]++;
-        document.getElementById('count-' + type).innerText = counts[type];
-        document.getElementById('output-section').style.display = "block";
-        document.getElementById('output-text').innerText = `OBSERVATION : +1 ${type} au jardin !`;
-    }
-
-    function openModal(date) {
-        document.getElementById('modal-date').innerText = date + " 2026";
-        document.getElementById('modal').style.display = "block";
-    }
-
-    function closeModal() { document.getElementById('modal').style.display = "none"; }
-
-    function saveAction() {
-        const p = document.getElementById('plant-select').value;
-        const a = document.getElementById('action-desc').value;
-        const d = document.getElementById('modal-date').innerText;
-        document.getElementById('output-section').style.display = "block";
-        document.getElementById('output-text').innerText = `LOG JARDIN : Le ${d}, action "${a}" sur "${p}"`;
-        closeModal();
-    }
-
-    function updateProgress() {
-        const today = new Date("2026-03-19"); // Fixé à aujourd'hui
-        const cultures = [
-            { id: "progres-pois", tid: "text-pois", start: "2026-03-07", cycle: 70 },
-            { id: "progres-tomates", tid: "text-tomates", start: "2026-03-10", cycle: 120 }
-        ];
-        cultures.forEach(c => {
-            const diff = Math.floor((today - new Date(c.start)) / (1000*60*60*24));
-            const pct = Math.min(Math.max(Math.round((diff/c.cycle)*100), 0), 100);
-            document.getElementById(c.id).style.width = pct + "%";
-            document.getElementById(c.tid).innerText = `⏳ ${pct}% du cycle (${diff} j)`;
-        });
-    }
-
-    window.onload = () => { renderCalendar(); updateProgress(); };
-</script>
-</body>
-</html>
 
 
 
